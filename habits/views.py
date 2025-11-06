@@ -1,7 +1,8 @@
-from rest_framework import viewsets, generics, permissions
-from .serializers import HabitSerializer
-from .permissions import IsOwner
+from rest_framework import generics, permissions, viewsets
+
 from .models import Habit
+from .permissions import IsOwner
+from .serializers import HabitSerializer
 
 
 class HabitViewSet(viewsets.ModelViewSet):

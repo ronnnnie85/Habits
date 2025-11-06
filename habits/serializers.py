@@ -1,12 +1,9 @@
-from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from rest_framework import serializers
 
 from .models import Habit
-from .validators import (
-    MaxDurationValueValidator,
-    PeriodValueValidator,
-    HabitBusinessValidator,
-)
+from .validators import (HabitBusinessValidator, MaxDurationValueValidator,
+                         PeriodValueValidator)
 
 
 class HabitSerializer(serializers.ModelSerializer):
