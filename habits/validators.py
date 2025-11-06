@@ -13,7 +13,9 @@ class MaxDurationValueValidator:
 
     def __call__(self, value):
         if value is not None and value > self.max_seconds:
-            raise ValidationError(f"Время выполнения не может быть больше {self.max_seconds} секунд.")
+            raise ValidationError(
+                f"Время выполнения не может быть больше {self.max_seconds} секунд."
+            )
 
 
 class PeriodValueValidator:
@@ -28,7 +30,9 @@ class PeriodValueValidator:
 
     def __call__(self, value):
         if value < self.min_days or value > self.max_days:
-            raise ValidationError(f"Периодичность должна быть от {self.min_days} до {self.max_days} дней.")
+            raise ValidationError(
+                f"Периодичность должна быть от {self.min_days} до {self.max_days} дней."
+            )
 
 
 class RewardOrLinkedValidator:
@@ -41,7 +45,9 @@ class RewardOrLinkedValidator:
         reward = data.get("reward")
         related_habit = data.get("related_habit")
         if reward and related_habit:
-            raise ValidationError("Нельзя одновременно указывать вознаграждение и связанную привычку.")
+            raise ValidationError(
+                "Нельзя одновременно указывать вознаграждение и связанную привычку."
+            )
 
 
 class RelatedHabitValidator:
@@ -53,7 +59,9 @@ class RelatedHabitValidator:
     def __call__(self, data: dict):
         related_habit = data.get("related_habit")
         if related_habit and not getattr(related_habit, "is_pleasant", False):
-            raise ValidationError("Связанной привычкой может быть только приятная привычка.")
+            raise ValidationError(
+                "Связанной привычкой может быть только приятная привычка."
+            )
 
 
 class PleasantHabitValidator:
@@ -66,7 +74,9 @@ class PleasantHabitValidator:
         reward = data.get("reward")
         related_habit = data.get("related_habit")
         if is_pleasant and (reward or related_habit):
-            raise ValidationError("У приятной привычки не может быть вознаграждения или связанной привычки.")
+            raise ValidationError(
+                "У приятной привычки не может быть вознаграждения или связанной привычки."
+            )
 
 
 class HabitBusinessValidator:

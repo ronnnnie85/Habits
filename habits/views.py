@@ -6,6 +6,7 @@ from .models import Habit
 
 class HabitViewSet(viewsets.ModelViewSet):
     """CRUD привычек текущего пользователя."""
+
     serializer_class = HabitSerializer
     permission_classes = (permissions.IsAuthenticated, IsOwner)
 
@@ -15,6 +16,7 @@ class HabitViewSet(viewsets.ModelViewSet):
 
 class PublicHabitListView(generics.ListAPIView):
     """Список публичных привычек."""
+
     serializer_class = HabitSerializer
     permission_classes = (permissions.AllowAny,)
 

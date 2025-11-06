@@ -23,9 +23,9 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
     openapi.Info(
-        title='Habit Tracker API',
-        default_version='v1',
-        description='API трекера полезных привычек',
+        title="Habit Tracker API",
+        default_version="v1",
+        description="API трекера полезных привычек",
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),
@@ -33,7 +33,6 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-
-    path('users/', include("users.urls", namespace="users")),
-    path('api/', include('habits.urls', namespace="habits")),
+    path("users/", include("users.urls", namespace="users")),
+    path("api/", include("habits.urls", namespace="habits")),
 ]

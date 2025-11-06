@@ -9,12 +9,25 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'password')
+        fields = ("id", "email", "phone", "tg_id", "password", "avatar")
 
     def create(self, validated_data):
-        user = User.objects.create_user(
-            username=validated_data['username'],
-            email=validated_data.get('email'),
-            password=validated_data['password'],
+        return User.objects.create_user(
+            email=validated_data["email"],
+            password=validated_data["password"],
+            **validated_data
         )
-        return user
+
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("email", "phone", "tg_id", "avatar")
+
+    def update(self, instance, validated_data):
+        instance.email = validated_data.get("email", instance.email)
+        instance.phone = validated_data.get("phone", instance.phone)
+        instance.tg_id = validated_data.get("tg_id", instance.tg_id)
+        instance.avatar = validated_data.get("avatar", instance.avatar)
+        instance.save()
+        return instance

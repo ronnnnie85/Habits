@@ -36,7 +36,6 @@ class HabitSerializer(serializers.ModelSerializer):
             "is_public",
         )
 
-
     def validate(self, attrs):
 
         data = {}
