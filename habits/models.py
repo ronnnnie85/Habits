@@ -38,5 +38,7 @@ class Habit(models.Model):
         verbose_name = "Привычка"
         verbose_name_plural = "Привычки"
 
+        ordering = ("-action",)
+
     def __str__(self):
         return f"я буду {self.action} в {self.time} в {self.place}"

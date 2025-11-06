@@ -50,14 +50,14 @@ class UserTests(APITestCase):
 
     def test_profile_get(self):
         self.authenticate()
-        url = reverse("users:user-profile")
+        url = reverse("users:user_profile")
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["email"], self.user.email)
 
     def test_profile_update_tg_id(self):
         self.authenticate()
-        url = reverse("users:user-profile")
+        url = reverse("users:user_profile")
         data = {"tg_id": "999999999", "phone": "70000000000"}
         response = self.client.patch(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)

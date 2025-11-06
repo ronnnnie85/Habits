@@ -12,11 +12,16 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         fields = ("id", "email", "phone", "tg_id", "password", "avatar")
 
     def create(self, validated_data):
-        return User.objects.create_user(
-            email=validated_data["email"],
-            password=validated_data["password"],
-            **validated_data
+        # выдергиваем email и password, чтобы не передавать их дважды
+        email = validated_data.pop("email")
+        password = validated_data.pop("password")
+
+        user = User.objects.create_user(
+            email=email,
+            password=password,
+            **validated_data,  # здесь уже только phone, tg_id, avatar и т.п.
         )
+        return user
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
