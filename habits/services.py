@@ -12,7 +12,6 @@ def send_telegram_message(chat_id: str, text: str) -> None:
         "text": text,
     }
     try:
-        response = requests.post(url, data=payload, timeout=5)
-        response.raise_for_status()
+        response = requests.get(url, data=payload, timeout=5)
     except requests.RequestException as e:
         print(f"Error sending message: {e}")

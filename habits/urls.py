@@ -3,6 +3,8 @@ from rest_framework.routers import DefaultRouter
 
 from .views import HabitViewSet, PublicHabitListView
 
+app_name = "habits"
+
 router = DefaultRouter()
 router.register("habits", HabitViewSet, basename="habit")
 
