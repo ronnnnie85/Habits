@@ -1,15 +1,12 @@
 from django.contrib.auth import get_user_model
-from django.urls import reverse
 from django.core.exceptions import ValidationError
+from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
 from habits.models import Habit
-from habits.validators import (
-    MaxDurationValueValidator,
-    PeriodValueValidator,
-    HabitBusinessValidator,
-)
+from habits.validators import (HabitBusinessValidator,
+                               MaxDurationValueValidator, PeriodValueValidator)
 
 User = get_user_model()
 
@@ -174,7 +171,9 @@ class HabitAPITests(APITestCase):
         url = reverse("habits:habit-detail", args=[habit.id])
         response = self.client.get(url)
         # в зависимости от твоей реализации разрешений может быть 403 или 404
-        self.assertIn(response.status_code, (status.HTTP_403_FORBIDDEN, status.HTTP_404_NOT_FOUND))
+        self.assertIn(
+            response.status_code, (status.HTTP_403_FORBIDDEN, status.HTTP_404_NOT_FOUND)
+        )
 
     def test_public_habits_list(self):
         Habit.objects.create(
