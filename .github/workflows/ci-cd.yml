@@ -36,7 +36,8 @@ jobs:
     needs: lint
 
     env:
-      SECRET_KEY: dummy
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      CORS_ALLOWED_ORIGINS: ${{ secrets.CORS_ALLOWED_ORIGINS }}
 
     steps:
       - name: Checkout code
