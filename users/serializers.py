@@ -9,7 +9,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("id", "email", "phone", "password", "avatar")
+        fields = ("id", "email", "phone", "tg_id", "password", "avatar")
 
     def create(self, validated_data):
 
@@ -27,11 +27,12 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("email", "phone", "avatar")
+        fields = ("email", "phone", "tg_id", "avatar")
 
     def update(self, instance, validated_data):
         instance.email = validated_data.get("email", instance.email)
         instance.phone = validated_data.get("phone", instance.phone)
         instance.avatar = validated_data.get("avatar", instance.avatar)
+        instance.tg_id = validated_data.get("tg_id", instance.tg_id)
         instance.save()
         return instance
