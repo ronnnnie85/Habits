@@ -32,13 +32,6 @@ class User(AbstractUser):
         verbose_name="Телефон",
         help_text="Укажите телефон",
     )
-    tg_id = models.CharField(
-        max_length=50,
-        blank=True,
-        null=True,
-        verbose_name="ID чата в ТГ",
-        help_text="Укажите ID чата в ТГ",
-    )
     avatar = models.ImageField(
         upload_to="users/avatars",
         blank=True,
