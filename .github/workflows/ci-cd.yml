@@ -94,6 +94,6 @@ jobs:
           sudo docker rm habits || true
           sudo docker run -d --name habits -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/habits:${{ github.sha }}
           
-          sudo docker compose exec web python manage.py migrate --noinput
-          sudo docker compose exec web python manage.py collectstatic --noinput
+          sudo docker exec habits python manage.py migrate --noinput
+          sudo docker exec habits python manage.py collectstatic --noinput
           EOF
