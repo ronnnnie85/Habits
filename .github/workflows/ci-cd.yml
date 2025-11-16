@@ -92,7 +92,14 @@ jobs:
           sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/habits:${{ github.sha }}
           sudo docker stop habits || true
           sudo docker rm habits || true
-          sudo docker run -d --name habits -p 80:8000 -e SECRET_KEY=${{ secrets.SECRET_KEY }} -e DATABASE_NAME=${{ secrets.DATABASE_NAME }} -e DATABASE_USER=${{ secrets.DATABASE_USER }} -e DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} -e DATABASE_HOST=${{ secrets.DATABASE_HOST }} -e DATABASE_PORT=${{ secrets.DATABASE_PORT }} ${{ secrets.DOCKER_HUB_USERNAME }}/habits:${{ github.sha }}
+          sudo docker run -d --name habits -p 80:8000 \
+          -e SECRET_KEY='${{ secrets.SECRET_KEY }}' \
+          -e DATABASE_NAME='${{ secrets.DATABASE_NAME }}' \
+          -e DATABASE_USER='${{ secrets.DATABASE_USER }}' \
+          -e DATABASE_PASSWORD='${{ secrets.DATABASE_PASSWORD }}' \
+          -e DATABASE_HOST='${{ secrets.DATABASE_HOST }}' \
+          -e DATABASE_PORT='${{ secrets.DATABASE_PORT }}' \
+          ${{ secrets.DOCKER_HUB_USERNAME }}/habits:${{ github.sha }}
           
           sudo docker exec habits python manage.py migrate --noinput
           sudo docker exec habits python manage.py collectstatic --noinput
