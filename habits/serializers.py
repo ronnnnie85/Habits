@@ -1,8 +1,11 @@
 from rest_framework import serializers
 
 from .models import Habit
-from .validators import (HabitBusinessValidator, MaxDurationValueValidator,
-                         PeriodValueValidator)
+from .validators import (
+    HabitBusinessValidator,
+    MaxDurationValueValidator,
+    PeriodValueValidator,
+)
 
 
 class HabitSerializer(serializers.ModelSerializer):

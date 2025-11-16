@@ -5,8 +5,11 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from habits.models import Habit
-from habits.validators import (HabitBusinessValidator,
-                               MaxDurationValueValidator, PeriodValueValidator)
+from habits.validators import (
+    HabitBusinessValidator,
+    MaxDurationValueValidator,
+    PeriodValueValidator,
+)
 
 User = get_user_model()
 
