@@ -5,8 +5,11 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from habits.models import Habit
-from habits.validators import (HabitBusinessValidator,
-                               MaxDurationValueValidator, PeriodValueValidator)
+from habits.validators import (
+    HabitBusinessValidator,
+    MaxDurationValueValidator,
+    PeriodValueValidator,
+)
 
 User = get_user_model()
 
@@ -223,6 +226,6 @@ class HabitAPITests(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("results", response.data)
-        # в settings.PAGE_SIZE = 5
-        self.assertEqual(len(response.data["results"]), 5)
+        # в settings.PAGE_SIZE = 10
+        self.assertEqual(len(response.data["results"]), 7)
         self.assertEqual(response.data["count"], 7)
