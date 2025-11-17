@@ -93,10 +93,13 @@ jobs:
 
       - name: Deploy to Server via Docker Compose
         run: |
-          scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_PROJECT_DIR }}
+          scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_PROJECT_DIR }}/
+
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "
             cd ${{ secrets.VPS_PROJECT_DIR }}
-            docker compose down
-            docker-compose pull   # Скачиваем последние версии образов с Docker Hub
-            docker compose up -d --build  # Запускаем контейнеры в фоновом режиме
-          EOF
+            echo 'YOUR_DOCKERHUB_TOKEN' | docker login -u YOUR_DOCKERHUB_USERNAME --password-stdin
+            docker-compose down
+            docker-compose pull
+            docker compose up -d --build
+          "
           
