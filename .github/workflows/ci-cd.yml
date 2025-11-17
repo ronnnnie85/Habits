@@ -92,7 +92,8 @@ jobs:
         run: |
           scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_PROJECT_DIR }}
             cd ${{ secrets.VPS_PROJECT_DIR }}
+            docker compose down
             docker-compose pull   # Скачиваем последние версии образов с Docker Hub
             docker compose up -d --build  # Запускаем контейнеры в фоновом режиме
           EOF
-
+          
