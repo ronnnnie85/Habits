@@ -74,33 +74,25 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: |
-            ${{ secrets.DOCKER_HUB_USERNAME }}/habits:${{ github.sha }}
-            ${{ secrets.DOCKER_HUB_USERNAME }}/habits:latest
+      - name: Build and Push Docker images
+        run: |
+            docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/habits:latest .
+            docker push ${{ secrets.DOCKER_HUB_USERNAME }}/habits:latest
 
   deploy:
-    needs: docker-build
     runs-on: ubuntu-latest
+    needs: docker-build
     steps:
-      # 4. SSH в сервер для деплоя
-      - name: SSH commands
-        uses: appleboy/ssh-action@v0.1.10
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
         with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER}}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          script: |
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+      - name: Deploy to Server via Docker Compose
+        run: |
+          scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_PROJECT_DIR }}
             cd ${{ secrets.VPS_PROJECT_DIR }}
-            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}:latest
-            docker stop habits || true
-            docker rm habits || true
-            docker run -d --name habits \
-              --env-file /path/to/.env \
-              --restart always \
-              -p 8000:8000 \
-              ${{ secrets.DOCKER_HUB_USERNAME }}:latest
+            docker-compose pull   # Скачиваем последние версии образов с Docker Hub
+            docker compose up -d --build  # Запускаем контейнеры в фоновом режиме
+          EOF
+
