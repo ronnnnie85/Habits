@@ -29,7 +29,7 @@ services:
       - "6379:6379"
 
   web:
-    image: ${DOCKER_USERNAME}/habits:latest
+    image: ronnnnie/habits:latest
     container_name: habits_web
     restart: always
     env_file:
@@ -53,7 +53,7 @@ services:
       - media_volume:/app/media
 
   celery:
-    image: ${DOCKER_USERNAME}/habits:latest
+    image: ronnnnie/habits:latest
     container_name: habits_celery
     restart: always
     command: celery -A config worker -l info
@@ -68,7 +68,7 @@ services:
       - redis
 
   celery-beat:
-    image: ${DOCKER_USERNAME}/habits:latest
+    image: ronnnnie/habits:latest
     container_name: habits_celery_beat
     restart: always
     command: celery -A config beat -l info
