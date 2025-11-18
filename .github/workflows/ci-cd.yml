@@ -97,6 +97,7 @@ jobs:
 
       - name: Deploy to Server via Docker Compose
         run: |
+          scp -o StrictHostKeyChecking=no docker-compose.prod.yml ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_PROJECT_DIR }}
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "
             cd ${{ secrets.VPS_PROJECT_DIR }}
             echo 'YOUR_DOCKERHUB_TOKEN' | docker login -u YOUR_DOCKERHUB_USERNAME --password-stdin
