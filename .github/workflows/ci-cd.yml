@@ -100,8 +100,8 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "
             cd ${{ secrets.VPS_PROJECT_DIR }}
             echo 'YOUR_DOCKERHUB_TOKEN' | docker login -u YOUR_DOCKERHUB_USERNAME --password-stdin
-            docker-compose -f docker-compose.prod.yml down web celery celery-beat
+            docker-compose -f docker-compose.prod.yml down
             docker-compose -f docker-compose.prod.yml pull
-            docker-compose -f docker-compose.prod.yml up -d --build web celery celery-beat
+            docker-compose -f docker-compose.prod.yml up -d --build
           "
           
