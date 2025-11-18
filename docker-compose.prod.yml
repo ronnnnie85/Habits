@@ -13,8 +13,6 @@ services:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
     healthcheck:
       test: pg_isready -U ${DATABASE_USER} -d ${DATABASE_NAME}
       interval: 5s
@@ -25,13 +23,9 @@ services:
     image: redis:7-alpine
     container_name: habits_redis
     restart: always
-    ports:
-      - "6379:6379"
 
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ronnnnie/habits:latest
     container_name: habits_web
     restart: always
     env_file:
@@ -55,9 +49,7 @@ services:
       - media_volume:/app/media
 
   celery:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ronnnnie/habits:latest
     container_name: habits_celery
     restart: always
     command: celery -A config worker -l info
@@ -72,9 +64,7 @@ services:
       - redis
 
   celery-beat:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ronnnnie/habits:latest
     container_name: habits_celery_beat
     restart: always
     command: celery -A config beat -l info
