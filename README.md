@@ -9,175 +9,175 @@
 
 - Регистрация и авторизация пользователей (JWT)
 - CRUD-операции с привычками
-- Разделение привычек на:
-  - **Полезные** — выполняемые ради результата  
-  - **Приятные** — выполняемые в качестве вознаграждения
-- Публичные привычки (просмотр другими пользователями)
-- Автоматические напоминания через Telegram-бот
-- Пагинация по 5 привычек на страницу
-- Валидация по правилам из книги «Атомные привычки»
+- Разделение привычек на полезные и приятные
+- Публичные привычки
+- Напоминания через Telegram-бот
+- Пагинация (5 привычек на страницу)
+- Комплексная валидация
 - Swagger / ReDoc документация
-- Покрытие тестами >80%
+- Покрытие тестами > 80%
 
 ---
 
 ## 🧩 Технологии
 
-| Компонент | Технология |
-|------------|-------------|
-| Backend | Django 5 + Django REST Framework |
-| Авторизация | Simple JWT |
-| Очереди | Celery + Redis |
-| Уведомления | Telegram Bot API |
-| Документация | drf-yasg (Swagger, ReDoc) |
-| База данных | PostgreSQL |
-| CORS | django-cors-headers |
-| Тестирование | unittest + DRF test client |
-| Формат кода | Flake8 (100%) |
+| Компонент      | Технология                |
+|----------------|---------------------------|
+| Backend        | Django 5 + DRF            |
+| Авторизация    | Simple JWT                |
+| Очереди        | Celery + Redis            |
+| Уведомления    | Telegram Bot API          |
+| Документация   | drf-yasg                  |
+| База данных    | PostgreSQL                |
+| Тестирование   | unittest                  |
+| CORS           | django-cors-headers       |
 
 ---
 
-## 🏗️ Структура проекта
+## ⚙️ Локальный запуск (без Docker)
+
+### 1️⃣ Клонирование
 
 ```
-Habit_tracker/
-│
-├── config/                # Настройки Django и Celery
-│   ├── settings.py
-│   ├── urls.py
-│   ├── celery.py
-│
-├── users/                 # Приложение пользователей
-│   ├── models.py          # Кастомная модель User с tg_id
-│   ├── serializers.py
-│   ├── views.py
-│   ├── urls.py
-│   └── tests.py
-│
-├── habits/                # Приложение привычек
-│   ├── models.py
-│   ├── serializers.py
-│   ├── validators.py
-│   ├── views.py
-│   ├── tasks.py           # Celery-задачи для напоминаний
-│   ├── telegram.py        # Работа с Telegram API
-│   ├── urls.py
-│   └── tests.py
-│
-├── requirements.txt
-├── manage.py
-└── README.md
-```
-
----
-
-## ⚙️ Установка и запуск
-
-### 1️⃣ Клонирование репозитория
-```bash
-git clone https://github.com/<your_username>/habit-tracker.git
-cd habit-tracker
+git clone https://github.com/ronnnnie85/Habits.git
+cd Habits
 ```
 
 ### 2️⃣ Виртуальное окружение
-```bash
+
+```
 python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
+source .venv/bin/activate
 ```
 
 ### 3️⃣ Установка зависимостей
-```bash
+
+```
 pip install -r requirements.txt
 ```
 
-### 4️⃣ Настройка переменных окружения `.env`
-Пример `.env`:
+### 4️⃣ Создание `.env`
 
-```env
-SECRET_KEY=supersecretkey
-DEBUG=True
-ALLOWED_HOSTS=127.0.0.1,localhost
-
-DATABASE_URL=postgres://postgres:postgres@localhost:5432/habits_db
-
-REDIS_URL=redis://localhost:6379/0
-TELEGRAM_BOT_TOKEN=1234567890:ABCDEF1234567890abcdef
+```
+cp .env_sample .env
 ```
 
-### 5️⃣ Миграции и суперпользователь
-```bash
-python manage.py makemigrations
+Отредактируйте значения.
+
+### 5️⃣ Миграции
+
+```
 python manage.py migrate
-python manage.py createsuperuser
 ```
 
-### 6️⃣ Запуск проекта
-```bash
+### 6️⃣ Запуск сервера
+
+```
 python manage.py runserver
 ```
 
-### 7️⃣ Запуск Celery
-В другом терминале:
-```bash
+### 7️⃣ Celery
+
+```
 celery -A config worker -l info
+celery -A config beat -l info
 ```
 
 ---
 
-## 🧾 Документация API
+## 🐳 Запуск через Docker
 
-После запуска сервера доступны:
+### 1️⃣ Создать `.env`
 
-- Swagger UI — [`http://127.0.0.1:8000/swagger/`](http://127.0.0.1:8000/swagger/)
-- ReDoc — [`http://127.0.0.1:8000/redoc/`](http://127.0.0.1:8000/redoc/)
+```
+cp .env_sample .env
+```
+
+### 2️⃣ Запуск
+
+```
+docker-compose up --build
+```
+
+Остановка:
+
+```
+docker-compose down
+```
 
 ---
 
-## 🧪 Тестирование и покрытие
+## 🌐 Деплой на удалённый сервер
 
-Запуск всех тестов:
-```bash
+### 1️⃣ Установка Docker
+
+```
+sudo apt update && sudo apt install -y docker.io docker-compose
+```
+
+### 2️⃣ Клонирование проекта
+
+```
+git clone https://github.com/ronnnnie85/Habits.git /var/www/habits
+cd /var/www/habits
+```
+
+### 3️⃣ Создать `.env`
+
+```
+cp .env_sample .env
+nano .env
+```
+
+### 4️⃣ Запуск продакшена
+
+```
+docker-compose -f docker-compose.prod.yml up -d --build
+```
+
+### 5️⃣ Установка Nginx
+
+```
+sudo apt install nginx
+sudo nano /etc/nginx/sites-available/habits
+```
+
+Пример конфига:
+
+```
+server {
+    listen 80;
+    server_name _;
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+
+Активация:
+
+```
+sudo ln -s /etc/nginx/sites-available/habits /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+---
+
+## 📚 Документация API
+
+- Swagger — `/swagger/`
+- ReDoc — `/redoc/`
+
+---
+
+## 🧪 Тестирование
+
+```
 coverage run manage.py test
-```
-
-Посмотреть отчёт:
-```bash
 coverage report -m
-```
-
-Сохранить в файл:
-```bash
-coverage report -m > coverage.txt
-```
-
-Сгенерировать HTML-отчёт:
-```bash
-coverage html
-```
-
----
-
-## ✅ Примеры эндпоинтов
-
-| Метод | URL | Описание |
-|--------|-----|----------|
-| `POST` | `/api/auth/register/` | Регистрация |
-| `POST` | `/api/auth/token/` | Получение JWT токенов |
-| `GET` | `/api/profile/` | Просмотр профиля |
-| `PATCH` | `/api/profile/` | Редактирование профиля |
-| `GET` | `/api/habits/habits/` | Список привычек пользователя |
-| `GET` | `/api/habits/public/` | Публичные привычки |
-| `POST` | `/api/habits/habits/` | Создание привычки |
-| `PATCH` | `/api/habits/habits/{id}/` | Обновление привычки |
-| `DELETE` | `/api/habits/habits/{id}/` | Удаление привычки |
-
----
-
-## 🧹 Качество кода
-
-Проверка PEP8:
-```bash
-flake8
 ```
 
 ---
