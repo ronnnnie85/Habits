@@ -25,7 +25,7 @@ services:
     restart: always
 
   web:
-    image: ronnnnie/habits:latest
+    image: ${DOCKER_USERNAME}/habits:latest
     container_name: habits_web
     restart: always
     env_file:
@@ -49,7 +49,7 @@ services:
       - media_volume:/app/media
 
   celery:
-    image: ronnnnie/habits:latest
+    image: ${DOCKER_USERNAME}/habits:latest
     container_name: habits_celery
     restart: always
     command: celery -A config worker -l info
@@ -64,7 +64,7 @@ services:
       - redis
 
   celery-beat:
-    image: ronnnnie/habits:latest
+    image: ${DOCKER_USERNAME}/habits:latest
     container_name: habits_celery_beat
     restart: always
     command: celery -A config beat -l info
@@ -88,6 +88,7 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - static_volume:/app/staticfiles
       - media_volume:/app/media
+      - /var/www/drf_homework_front:/var/www/drf_homework_front
     depends_on:
       - web
 
